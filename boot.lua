@@ -12,3 +12,5 @@ APP = Application:new()
 APP.config.env = ParaEngine.GetAppCommandLineByParam("env", "development")
 APP.config.port = ParaEngine.GetAppCommandLineByParam("port", 8088)
 APP:start()
+
+NPL.this(function() end)
