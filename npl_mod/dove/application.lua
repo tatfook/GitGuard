@@ -26,12 +26,11 @@ end
 function App:info()
 end
 
-function App:start()
+function App:start(dir, ip, port)
     self.config:load_env()
     load_app()
     -- 启动web服务器
-    WebServer:Start("app", "0.0.0.0", self.config.port)
-    LOG("init app succeed!")
+    WebServer:Start(dir, ip, port)
 end
 
 function App:handle(msg)
