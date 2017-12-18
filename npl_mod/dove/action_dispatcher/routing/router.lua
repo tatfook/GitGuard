@@ -25,12 +25,12 @@ local function complete_extra_params(params, url, url_rule)
     return params
 end
 
-function _M.handle(env)
-    local request = env.request
+function _M.handle(ctx)
+    local request = ctx.request
     local path = request:url()
     local method = request:GetMethod()
     local params = request:getparams() or {}
     local rule = Route.parse(method, path)
-    env.params = complete_extra_params(params, path, rule.url)
-    env.rule = rule
+    ctx.params = complete_extra_params(params, path, rule.url)
+    ctx.rule = rule
 end

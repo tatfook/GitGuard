@@ -1,12 +1,11 @@
 --[[
-title: dove enviroment
+title: dove middleware context
 author: chenqh
 date: 2017/12/10
 desc: a wrapper including request and response, will pass through all middleware
 ]]
 
-
-local _M = commonlib.inherit(nil, "Dove.Middleware.Enviroment")
+local _M = commonlib.inherit(nil, "Dove.Context")
 
 function _M:ctor()
 end

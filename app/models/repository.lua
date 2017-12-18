@@ -18,7 +18,7 @@ function _M:ctor()
 end
 
 function _M:init_repository()
-    self.repo = GIT.Repository.init(GIT.root_path .. self.data.name, 1)
+    self.repo = GIT.Repository.init(APP.config.git_path .. self.data.name, 1)
     self:print_repo()
 end
 

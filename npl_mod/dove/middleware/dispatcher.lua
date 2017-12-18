@@ -5,8 +5,6 @@ date: 2017/12/10
 desc: dove marshal Dispatcher, handle all middlewares in pipeline
 ]]
 
-NPL.load("./enviroment")
-local Enviroment = commonlib.gettable("Dove.Middleware.Enviroment")
 local _M = commonlib.gettable("Dove.Middleware.Dispatcher")
 
 _M.pipeline = {}
@@ -24,7 +22,6 @@ local function add_service(middleware, lib)
 end
 
 local function traversal(env)
-    print("go traversal ==============")
     for _, middleware in ipairs(_M.pipeline) do
         _M.services[middleware].handle(env)
     end
@@ -45,15 +42,10 @@ function _M.register(middleware)
     log("middleware " .. middleware .. " loaded!\n")
 end
 
-function _M.handle(msg)
-    local req = WebServer.request:new():init(msg)
-
-    local env = Enviroment:new()
-    env:init(req)
-
+function _M.handle(ctx)
     xpcall(
         function()
-            traversal(env)
+            traversal(ctx)
         end,
         function(e)
             print("error: Dispatcher.traversal failed.")
@@ -62,12 +54,12 @@ function _M.handle(msg)
         end
     )
 
-    if (string.find(req.response.statusline, "302")) then
-        req.response:send("")
-    elseif (req._isAsync) then
+    if (string.find(ctx.response.statusline, "302")) then
+        ctx.response:send("")
+    elseif (ctx.request._isAsync) then
         print("a async request.")
     else
-        req.response:finish()
-        req.response:End()
+        ctx.response:finish()
+        ctx.response:End()
     end
 end

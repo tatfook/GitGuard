@@ -3,7 +3,7 @@ local Route = commonlib.gettable("ActionDispatcher.Routing.Route")
 
 local routes = {
     urls = {
-        {"get", "/", "controller.repository", "index"}
+        {"get", "/", "Controller.Home", "index"}
     },
     resources = {
         repositories = {},

@@ -1,3 +1,1 @@
-
-
-npl bootstrapper="app/boot.lua" port="8088"
+npl bootstrapper="boot.lua"
