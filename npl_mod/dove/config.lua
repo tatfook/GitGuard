@@ -4,17 +4,14 @@ author: chenqh
 date: 2017/12/11
 ]]
 
-local config = commonlib.gettable("dove.config")
+local Config = commonlib.gettable("Dove.Config")
 
-config.env = "development"
+Config.env = "development" --default
+Config.port = 8088
 
-function config.set_env(env)
-    self.env = env
+function Config.load_env()
+    NPL.load("config/enviroments/" .. Config.env)
+    print("load: " .. "config/enviroments/" .. Config.env)
 end
 
-function config.load_env()
-    if(self.env == "test") then
-    elseif(self.env == "production") then
-    else -- default is development
-    end
-end
+Config.load_env()

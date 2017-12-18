@@ -5,6 +5,7 @@ date: 2017/12/11
 desc: load dove libraries in order
 ]]
 
+NPL.load("./config")
 NPL.load("./utils/utils")
 NPL.load("./middleware/base")
 NPL.load("./controller/base")
