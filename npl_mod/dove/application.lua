@@ -9,12 +9,13 @@ local App = commonlib.inherit(nil, "Dove.Application")
 local Loader = commonlib.gettable("Dove.Utils.Loader")
 local Dispatcher = commonlib.gettable("Dove.Middleware.Dispatcher")
 
-App.settings = {
-    author = ""
+App.config = {
+    env = "development",
+    port = "8088",
+    template = "Dove.Renderer.Template"
 }
 
 function App:ctor()
-    self.config = Dove.Config:new()
 end
 
 local function load_app()
@@ -26,11 +27,11 @@ end
 function App:info()
 end
 
-function App:start(dir, ip, port)
-    self.config:load_env()
+function App:start()
+    NPL.load("config/enviroment/" .. self.config.env)
     load_app()
     -- 启动web服务器
-    WebServer:Start(dir, ip, port)
+    WebServer:Start("app", "0.0.0.0", self.config.port)
 end
 
 function App:handle(msg)
