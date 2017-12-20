@@ -37,7 +37,7 @@ GET /user/pages
 
 local Pluralize = commonlib.gettable("Dove.Utils.Pluralize")
 local StringHelper = commonlib.gettable("Dove.Utils.StringHelper")
-local RegexHelper = commonlib.gettable("Dove.Utils.RegexHelper")
+local RegexHelper = commonlib.gettable("ActionDispatcher.Routing.RegexHelper")
 local _M = commonlib.gettable("ActionDispatcher.Routing.Route")
 
 local route_matcher = {

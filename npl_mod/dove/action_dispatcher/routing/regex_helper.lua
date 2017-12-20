@@ -4,7 +4,7 @@ author: chenqh
 date: 2017/12/11
 ]]
 
-local _M = commonlib.gettable("Dove.Utils.RegexHelper")
+local _M = commonlib.gettable("ActionDispatcher.Routing.RegexHelper")
 
 function _M.is_formal(source)
     local input = source
@@ -16,8 +16,9 @@ function _M.formulize(source)
     local input = source
     if(_M.is_formal(input)) then return input end
     -- replace all :*_id to %w*
-    input = input:gsub(":%a*id", "%%w*")
+    input = input:gsub(":%a*id", "%%w+")
+    input = input:gsub("/?$", "/?")
     -- add ^ and $
-    input = '^' .. input .. '$'
+    input = '^' .. input .. "$"
     return input
 end

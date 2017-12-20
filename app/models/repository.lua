@@ -26,7 +26,7 @@ function _M:init(name)
 end
 
 function _M:path()
-    return APP.config.git_path .. self.name
+    return PathHelper.concat(APP.config.git_path, self.name)
 end
 
 function _M:open()

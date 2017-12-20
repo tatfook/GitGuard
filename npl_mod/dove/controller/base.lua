@@ -6,7 +6,7 @@ Date: 2017/11/22
 Desc: model converts from database rows to objects.
 virtual functions: index, show, create, destroy, update
 ]]
-NPL.load("./filter")
+NPL.load("./module/filter")
 
 local _M = commonlib.inherit(nil, "Dove.Controller.Base")
 local Renderer = commonlib.gettable("Dove.Renderer")

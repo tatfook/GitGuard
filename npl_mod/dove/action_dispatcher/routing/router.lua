@@ -5,7 +5,9 @@ date: 2017/12/10
 desc: router middleware to parse router
 ]]
 
+NPL.load("./regex_helper")
 NPL.load("./route")
+
 local StringHelper = commonlib.gettable("Dove.Utils.StringHelper")
 local Route = commonlib.gettable("ActionDispatcher.Routing.Route")
 local _M = commonlib.gettable("ActionDispatcher.Routing.Router")

@@ -51,6 +51,7 @@ function _M.handle(ctx)
             print("error: Dispatcher.traversal failed.")
             print(e)
             print(debug.traceback())
+            ctx.response:send( e .. "\n" .. debug.traceback())
         end
     )
 
