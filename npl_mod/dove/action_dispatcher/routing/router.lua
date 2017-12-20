@@ -6,20 +6,21 @@ desc: router middleware to parse router
 ]]
 
 NPL.load("./route")
-
+local StringHelper = commonlib.gettable("Dove.Utils.StringHelper")
 local Route = commonlib.gettable("ActionDispatcher.Routing.Route")
 local _M = commonlib.gettable("ActionDispatcher.Routing.Router")
 
 local function complete_extra_params(params, url, url_rule)
-    local extra_keys = url_rule:match(":%w*_id")
+    local extra_keys = url_rule:match(":%w*id")
     if(extra_keys == nil or #extra_keys == 0) then return params end
 
-    local url_rule_fragments = url_rule:gmatch("/")
-    local url_fragments = url_rule:gmatch("/")
+    local url_rule_fragments = StringHelper.split(url_rule, "[^/]+")
+    local url_fragments = StringHelper.split(url, "[^/]+")
 
     for index, key in ipairs(url_rule_fragments) do
-        if(key:match("^:%w*_id$")) then
-            table.insert(params, url_fragments[index])
+        if(key:match("^:%w*id$")) then
+            key = key:gsub("^:(%w*id)$", "%1")
+            params[key] = url_fragments[index]
         end
     end
     return params

@@ -6,58 +6,23 @@ Date: 2017/11/22
 Desc: model converts from database rows to objects.
 virtual functions: index, show, create, destroy, update
 ]]
+NPL.load("./filter")
 
 local _M = commonlib.inherit(nil, "Dove.Controller.Base")
+local Renderer = commonlib.gettable("Dove.Renderer")
+
 _M.resource_name = "unnamed"
-_M.filter_types = {before = "before_filters", after = "after_filters"}
-_M.before_filters = {}
---[[ define before filters, will execute those methods before the action
-_M.before_filters = {
-    "action name"= {} -- method array
-    ...
-}
-]]
-_M.after_filters = {}
---[[ define after filters, will execute those methods after the action
-_M.after_filters = {
-    "action name" = {} -- method array
-    ...
-}
-]]
 
 local table_insert = table.insert
-
-function _M:add_filter_to_actions(filter, filter_type, actions)
-    local filter_name = self.filter_types[filter_type:lower()]
-    if(filter_name == nil) then error("Invalid filter type: " .. filter_type) end
-    local filters = self[filter_name]
-    for _, action in ipairs(actions) do
-        table_insert(filters[action], filter)
-    end
-end
-
-function _M:execute_filters(filters, action)
-    for _, func in ipairs(filters[action] or {}) do
-        self:execute_function(func)
-    end
-end
-
-function _M:execute_function(func)
-    if(type(self[func]) == "function") then
-        self[func](self)
-    else
-        error("Invalid function: " .. func .. " in controller " .. self.resource_name)
-    end
-end
 
 function _M:ctor()
 end
 
-function _M:init(env)
-    self.env = env
-    self.params = env.params
-    self.request = env.request
-    self.response = env.response
+function _M:init(ctx)
+    self.ctx = ctx
+    self.params = ctx.params
+    self.request = ctx.request
+    self.response = ctx.response
 
     self.have_resource = true
     if(self.resource_name == "unnamed") then
@@ -71,14 +36,22 @@ function _M:init(env)
 end
 
 function _M:handle(action)
-    self:execute_filters(self.before_filters or {}, action)
-    self:execute_function(action)
-    self:execute_filters(self.after_filters or {}, action)
+    self:execute_with_filters(action)
+    if(not self.ctx.is_render and not self.is_redirect) then self:render() end -- will try to render default data
+end
+
+function _M:render()
+    Renderer.render(self.ctx)
+end
+
+function _M:redirect_to(uri)
+    self.is_redirect = true
+    -- TODO
 end
 
 function _M:index()
     if(self.have_resource) then
-        result = self.resource.get(self.params)
+        return self.resource.get(self.params)
     end
 end
 
@@ -98,3 +71,4 @@ function _M:delete()
 
 end
 
+Dove.Module.import(_M, "Module.Controller.Filter")

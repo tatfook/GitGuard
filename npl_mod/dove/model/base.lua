@@ -10,7 +10,6 @@ base functions: get, create, delete, update
 local _M = commonlib.inherit(nil, "Dove.Model.Base")
 _M.resource_name = "unnamed"
 _M.attributes = {}
-_M.data = {}
 _M.orm = nil
 
 function _M:ctor()
@@ -26,6 +25,7 @@ end
 
 function _M:add_attribute(attribute)
 	self.attributes[attribute.name] = attribute
+	self[attribute.name] = attribute.default
 end
 
 function _M:add_attributes(attributes)
@@ -45,7 +45,7 @@ function _M:build(attributes)
 						.. ", but get " .. type(value)
 					)
 			end
-			self.data[attr] = value
+			self[attr] = value
 		end
 	end
 	return self

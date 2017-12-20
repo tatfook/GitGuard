@@ -16,7 +16,7 @@ function _M.formulize(source)
     local input = source
     if(_M.is_formal(input)) then return input end
     -- replace all :*_id to %w*
-    input:gsub(":%a_id", "%w*")
+    input = input:gsub(":%a*id", "%%w*")
     -- add ^ and $
     input = '^' .. input .. '$'
     return input

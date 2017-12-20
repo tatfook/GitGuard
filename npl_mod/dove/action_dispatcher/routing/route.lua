@@ -47,7 +47,6 @@ local route_matcher = {
     put         = "update"
 }
 
-local gmatch = string.gmatch
 local is_plural = Pluralize.is_plural
 local singular = Pluralize.singular
 local plural = Pluralize.plural

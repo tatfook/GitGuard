@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>repositories</title>
+    </head>
+    <body>
+        <ul>
+            {% for _, repo in ipairs(repositories) do %}
+                <li>{{ repo }}</li>
+            {% end %}
+        </ul>
+    </body>
+</html>

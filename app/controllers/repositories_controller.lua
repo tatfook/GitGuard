@@ -8,24 +8,30 @@
 local _C = commonlib.inherit(Dove.Controller.Base, "Controller.Repository")
 _C.resource_name = "repository"
 
-_C.before_filters = {
-    index = {"say_hello"}
-}
+_C.before_each("print_params")
 
-function _C:say_hello()
-    print("========================say hello!")
+function _C:print_params()
+    for k, v in pairs(self.params) do
+        print(k .. " ------ " .. v)
+    end
 end
 
 function _C:index()
-    echo("I'm here!")
-    self.response:send("Hello World!", true)
+    local list = Model.Repository.list_all()
+
+    return {repositories = list}
+end
+
+function _C:show()
+    print(self.params["id"])
+    local repo = self.Resource:new():init(self.params["id"])
+    repo:open()
+
+    return {repo = repo}
 end
 
 function _C:create()
     print("==============================create repository")
-    for k, v in pairs(self.params) do
-        print(k .. " ------ " .. v)
-    end
     local repo = self.Resource:new():build(self.params)
     repo:save()
     -- render(repo.data)

@@ -5,6 +5,7 @@ date: 2017/12/17
 ]]
 
 local _M = commonlib.gettable("Dove.Utils.StringHelper")
+local table_insert = table.insert
 
 function _M.camelize(str)
     return str:gsub("[-_](%w)", string.upper)
@@ -16,4 +17,12 @@ end
 
 function _M.classify(str)
     return _M.capitalize(_M.camelize(str))
+end
+
+function _M.split(str, pattern)
+    local arr = {}
+    for part in str:gmatch(pattern) do
+        table_insert(arr, part)
+    end
+    return arr
 end

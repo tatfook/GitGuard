@@ -11,5 +11,6 @@ NPL.load("./pluralize")
 NPL.load("./path_helper")
 NPL.load("./regex_helper")
 NPL.load("./string_helper")
+NPL.load("./module")
 
 -- Dove.Utils.Loader.load_files("dove/utils")

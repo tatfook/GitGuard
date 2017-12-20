@@ -17,7 +17,7 @@ function _M.load_files(basedir, patterns)
             local path = basedir .. '/' .. entry
             local attr = lfs.attributes(path)
             if(not (type(attr) == 'table')) then
-              error("get attributes of '" .. path .. "' failed.")
+                error("get attributes of '" .. path .. "' failed.")
             end
 
             if attr.mode == 'directory' then
