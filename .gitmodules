@@ -7,3 +7,6 @@
 [submodule "lib/luagit2/src/LuaNativeObjects"]
 	path = lib/luagit2/src/LuaNativeObjects
 	url = git@github.com:Neopallium/LuaNativeObjects.git
+[submodule "lib/luagit2/src/libgit2"]
+	path = lib/luagit2/src/libgit2
+	url = git@github.com:libgit2/libgit2.git
