@@ -1,6 +1,6 @@
 
 <ul>
     {% for _, repo in ipairs(repositories) do %}
-        <li>{{ repo }}</li>
+        <li>{* H.route_for(H.url_for("Repository#show", "get", {id=repo}), repo) *}</li>
     {% end %}
 </ul>

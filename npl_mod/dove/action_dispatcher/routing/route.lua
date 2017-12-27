@@ -38,6 +38,7 @@ GET /user/pages
 local Pluralize = commonlib.gettable("Dove.Utils.Pluralize")
 local StringHelper = commonlib.gettable("Dove.Utils.StringHelper")
 local RegexHelper = commonlib.gettable("ActionDispatcher.Routing.RegexHelper")
+local Rule = commonlib.gettable("ActionDispatcher.Routing.Rule")
 local _M = commonlib.gettable("ActionDispatcher.Routing.Route")
 
 local route_matcher = {
@@ -52,7 +53,6 @@ local singular = Pluralize.singular
 local plural = Pluralize.plural
 local table_concat = table.concat
 local table_insert = table.insert
-local table_clone = table.clone
 local deepcopy = commonlib.deepcopy
 
 _M.routes = {}
@@ -71,8 +71,8 @@ local function build_url_and_controller(action, resource, resources_stack, names
     local controller = "Controller"
     local url = ""
     if(namespaces ~= nil) then
-        controller = controller .. "." .. namespaces.concat(".")
-        url = "/" .. namespaces.concat("/")
+        controller = controller .. "." .. table_concat(namespaces, ".")
+        url = "/" .. table_concat(namespaces, "/")
     end
 
     controller = controller .. "." .. singular(resource)
@@ -184,16 +184,7 @@ local function build_rules(rules)
 end
 
 function _M.add_rule(rule)
-    local rule_object = {
-        origin      = deepcopy(rule),
-        method      = rule[1], -- "PUT"
-        url         = rule[2], -- "/users/:id/"
-        controller  = rule[3], -- "controller.user"
-        action      = rule[4], -- "update"
-        desc        = rule[5],  -- "update a user"
-    }
-    rule_object.regex = RegexHelper.formulize(rule_object.url)
-    table_insert(_M.rules, rule_object)
+    table_insert(_M.rules, Rule:new():init(rule))
 end
 
 function _M.init(source)
@@ -215,10 +206,40 @@ function _M.print()
 end
 
 function _M.parse(method, url)
+    local method = method:lower()
     for _, r in ipairs(_M.rules) do
-        if(r.method == method:lower() and url:match(r.regex)) then
+        if(r.method == method and url:match(r.regex)) then
             return deepcopy(r) -- keep route rules save
         end
     end
     error("Invalid url: " .. url)
+end
+
+function _M.find_rule(url, method)
+    local temp = StringHelper.split(url, "[^#]+")
+    local rule = nil
+    if(#temp == 2) then -- controller#action
+        local controller = temp[1]
+        local action = temp[2]
+        if(not controller:match("^Controller.")) then controller = "Controller." .. controller end
+        rule = _M.find_rule_by_action(method, controller, action)
+    else -- /users/:id
+        rule = _M.find_rule_by_url(method, url)
+    end
+    return rule
+end
+
+function _M.find_rule_by_url(method, url)
+    local method = method:lower()
+    local regex = RegexHelper.formulize(url)
+    for _, r in ipairs(_M.rules) do
+        if(r.regex == regex and r.method == method) then return deepcopy(r) end
+    end
+end
+
+function _M.find_rule_by_action(method, controller, action)
+    local method = method:lower()
+    for _, r in ipairs(_M.rules) do
+        if(r.action == action and r.controller == controller and r.method == method) then return deepcopy(r) end
+    end
 end

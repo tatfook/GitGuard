@@ -19,6 +19,12 @@ function _M.classify(str)
     return _M.capitalize(_M.camelize(str))
 end
 
+--[[
+example:
+str = "hello#world"
+pattern = "[^#]+"
+split(str, pattern) will return {"hello", "world"}
+]]
 function _M.split(str, pattern)
     local arr = {}
     for part in str:gmatch(pattern) do

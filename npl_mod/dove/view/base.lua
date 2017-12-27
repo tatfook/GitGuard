@@ -1,3 +1,4 @@
+NPL.load("./helper")
 NPL.load("./layout")
 NPL.load("./renderer")
 
