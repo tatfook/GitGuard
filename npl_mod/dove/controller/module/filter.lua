@@ -65,7 +65,7 @@ function _M.import_into(class)
     function _C:execute_with_filters(action)
         self.execute_filters(self.before_each_filters or {}, action)
         self:execute_filters(self.before_filters or {}, action)
-        self.ctx.data = self:execute_function(action)
+        self.view.data = self:execute_function(action)
         self.execute_filters(self.after_each_filters or {}, action)
         self:execute_filters(self.after_filters or {}, action)
     end

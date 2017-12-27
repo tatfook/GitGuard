@@ -8,7 +8,7 @@ desc: load dove libraries in order
 NPL.load("./utils/utils")
 NPL.load("./middleware/base")
 NPL.load("./model/base")
-NPL.load("./view/renderer")
+NPL.load("./view/base")
 NPL.load("./controller/base")
 NPL.load("./action_dispatcher/processor")
 

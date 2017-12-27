@@ -11,7 +11,13 @@ local Dispatcher = commonlib.gettable("Dove.Middleware.Dispatcher")
 
 App.config = {
     env = "development",
-    port = "8088"
+    port = "8088",
+    layout = {
+        default_template = "application_layout",
+        enable = true
+    }
+    -- default_template = nil
+    -- default_template_file = nil
 }
 
 function App:ctor()

@@ -12,7 +12,6 @@ local Router = commonlib.gettable("ActionDispatcher.Routing.Router")
 
 function _M.handle(ctx)
     Router.handle(ctx)
-    local controller = commonlib.gettable(ctx.rule.controller):new()
-    controller:init(ctx)
+    local controller = commonlib.gettable(ctx.rule.controller):new():init(ctx)
     controller:handle(ctx.rule.action)
 end
