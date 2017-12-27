@@ -57,13 +57,13 @@ local deepcopy = commonlib.deepcopy
 
 _M.routes = {}
 _M.rules = {}
-_M.api_only = false -- the default restful actions will not include :new and :edit if api only
+_M.api_only = false -- the default restful actions will not include :add and :edit if api only
 
 local function url_tail(action, is_member)
     if(action == "index" or action == "create") then return "" end
     if(action == "show" or action == "delete" or action == "update") then return "/:id" end
     if(action == "edit" or is_member == true) then return "/:id/" .. action end
-    if(action == "new" or is_member == false) then return "/" .. action end
+    if(action == "add" or is_member == false) then return "/" .. action end
     error("Invalid action setting: " .. action)
 end
 
@@ -92,14 +92,14 @@ local function build_rest_actions(only, except, resource, resources_stack, names
     local actions_map = {
         index   = "get", -- action = method
         show    = "get",
-        new     = "get",
+        add     = "get",
         create  = "post",
         edit    = "get",
         update  = "put",
         delete  = "delete",
     }
     if(_M.api_only) then
-        actions_map.new = nil
+        actions_map.add = nil
         actions_map.edit = nil
     end
 
@@ -123,6 +123,11 @@ local function build_rest_actions(only, except, resource, resources_stack, names
     local url = nil
     local method = nil
     local controller = nil
+    if(actions_map.add) then -- make sure action "add" has higher priority than action "show"
+        url, controller = build_url_and_controller("add", resource, resources_stack, namespaces)
+        _M.add_rule({"get", url, controller, "add"})
+        actions_map.add = nil
+    end
     for action, method in pairs(actions_map) do
         url, controller = build_url_and_controller(action, resource, resources_stack, namespaces)
         method = actions_map[action]

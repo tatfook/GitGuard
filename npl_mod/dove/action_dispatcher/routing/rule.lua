@@ -29,7 +29,7 @@ function _M:generate_url(params)
         params[id_key] = nil
     end
     local tails = {}
-    for k, v in pairs(params) do
+    for k, v in pairs(params or {}) do
         table_insert(tails, k .. "=" .. v)
     end
     if(#tails > 0) then

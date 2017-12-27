@@ -10,6 +10,7 @@ NPL.load("./module/filter")
 
 local _M = commonlib.inherit(nil, "Dove.Controller.Base")
 local View = commonlib.gettable("Dove.View.Base")
+local Helper = commonlib.gettable("Dove.Helper")
 
 _M.resource_name = "unnamed"
 
@@ -42,9 +43,10 @@ function _M:handle(action)
     if(not self.view.is_rendered and not self.is_redirected) then self.view:render() end
 end
 
-function _M:redirect_to(uri)
+function _M:redirect_to(url, method, params)
     self.is_redirected = true
-    -- TODO
+    local url = Helper.url_for(url, method, params)
+    self.ctx.response:status(302):set_header("Location", url)
 end
 
 function _M:index()

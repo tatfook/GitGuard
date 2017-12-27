@@ -12,6 +12,7 @@ NPL.load("./view/base")
 NPL.load("./controller/base")
 NPL.load("./action_dispatcher/processor")
 
+NPL.load("./helper")
 NPL.load("./context")
 NPL.load("./application")
 

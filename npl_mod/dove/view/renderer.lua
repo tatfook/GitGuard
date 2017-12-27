@@ -26,8 +26,8 @@ function _M.render_template(ctx, data, path)
     local template = APP.config.template or _M.default_template
     local context = data or {}
     context.ctx = ctx
-    context.helper = Dove.View.Helper
-    context.H = Dove.View.Helper
+    context.helper = Dove.Helper
+    context.H = Dove.Helper
 
     local content = template.render(path, context)
     return content

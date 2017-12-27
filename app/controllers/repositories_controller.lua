@@ -30,6 +30,10 @@ function _C:show()
     return {repo = repo}
 end
 
+function _C:add()
+    self:redirect_to("Repository#index", "get")
+end
+
 function _C:create()
     print("==============================create repository")
     local repo = self.Resource:new():build(self.params)
