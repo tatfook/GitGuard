@@ -17,7 +17,7 @@ function _M.load_files(basedir, patterns)
             local path = basedir .. '/' .. entry
             local attr = lfs.attributes(path)
             if(not (type(attr) == 'table')) then
-                error("get attributes of '" .. path .. "' failed.")
+                error(format("get attributes of '%s' failed.", path))
             end
 
             if attr.mode == 'directory' then
@@ -25,7 +25,7 @@ function _M.load_files(basedir, patterns)
             else
                 for _, pattern in ipairs(patterns) do
                     if (path:match(pattern)) then
-                        print("load: " .. path)
+                        log(format("load: %s", path))
                         NPL.load(path)
                         break
                     end

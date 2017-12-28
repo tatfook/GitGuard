@@ -19,6 +19,5 @@ function _M.formulize(source)
     input = input:gsub(":%a*id", "%%w+")
     input = input:gsub("/?$", "/?")
     -- add ^ and $
-    input = '^' .. input .. "$"
-    return input
+    return format("^%s$", input)
 end

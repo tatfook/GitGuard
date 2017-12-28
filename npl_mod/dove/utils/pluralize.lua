@@ -472,8 +472,8 @@ function _M.plural(line, count)
     if(count == 1) then return _M.singular(word) end
     local last_word = line:match("[^%w]?%w+$"):gsub("[^%w]?", "")
 
-    local result = plural_word(last_word)
-    return line:gsub("([^%w]?)%w+$", "%1" .. result)
+    local result = line:gsub("([^%w]?)%w+$", "%1" .. plural_word(last_word))
+    return result
 end
 
 function _M.singular(line)
@@ -481,8 +481,8 @@ function _M.singular(line)
     local last_word = line:match("[^%w]?%w+$"):gsub("[^%w]?", "")
     local lower_word = last_word:lower()
 
-    local result = singular_word(last_word)
-    return line:gsub("([^%w]?)%w+$", "%1" .. result)
+    local result = line:gsub("([^%w]?)%w+$", "%1" .. singular_word(last_word))
+    return result
 end
 
 -- initialize

@@ -24,13 +24,13 @@ function _M:generate_url(params)
     local url = self.url
     for key in self.url:gmatch(":%w*id") do
         local id_key = key:gsub("^:(%w*id)", "%1")
-        if(not params[id_key]) then error("Invalid params on Key: " .. id_key) end
+        if(not params[id_key]) then error(format("Invalid params on Key: %s", id_key)) end
         url = url:gsub(key, params[id_key])
         params[id_key] = nil
     end
     local tails = {}
     for k, v in pairs(params or {}) do
-        table_insert(tails, k .. "=" .. v)
+        table_insert(tails, format("%s=%s", k, v))
     end
     if(#tails > 0) then
         url = url .. "?" .. table_concat(tails, "&")

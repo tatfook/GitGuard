@@ -39,11 +39,7 @@ function _M:build(attributes)
 		local attribute = self.attributes[attr]
 		if(attribute ~= nil) then
 			if(type(value) ~= attribute.type) then -- TODO: auto convert
-				error(
-						"Invalid type of " .. attribute.name
-						.. ", expect is " .. attribute.type
-						.. ", but get " .. type(value)
-					)
+				error(format("Invalid type of %s, expect is %s, but get %s", attribute.name, attribute.type, type(value)))
 			end
 			self[attr] = value
 		end

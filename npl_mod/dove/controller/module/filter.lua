@@ -38,7 +38,7 @@ function _M.import_into(class)
 
     function _C.add_filter_to_actions(filter, filter_type, actions)
         local filter_name = _C.filter_types[filter_type:lower()]
-        if(filter_name == nil) then error("Invalid filter type: " .. filter_type) end
+        if(filter_name == nil) then error(format("Invalid filter type: %s", filter_type)) end
         local filters = _C[filter_name]
         for _, action in ipairs(actions) do
             table_insert(filters[action], filter)
@@ -55,7 +55,7 @@ function _M.import_into(class)
         if(type(self[func]) == "function") then
             return self[func](self)
         else
-            error("Invalid function: " .. func .. " in controller " .. self.resource_name)
+            error(format("Invalid function: %s in controller %s", func, self.resource_name))
         end
     end
 

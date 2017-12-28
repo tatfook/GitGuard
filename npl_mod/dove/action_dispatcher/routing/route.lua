@@ -60,29 +60,32 @@ _M.rules = {}
 _M.api_only = false -- the default restful actions will not include :add and :edit if api only
 
 local function url_tail(action, is_member)
-    if(action == "index" or action == "create") then return "" end
-    if(action == "show" or action == "delete" or action == "update") then return "/:id" end
-    if(action == "edit" or is_member == true) then return "/:id/" .. action end
-    if(action == "add" or is_member == false) then return "/" .. action end
-    error("Invalid action setting: " .. action)
+    if(action == "index" or action == "create") then return nil end
+    if(action == "show" or action == "delete" or action == "update") then return ":id" end
+    if(action == "edit" or is_member == true) then return format(":id/%s", action) end
+    if(action == "add" or is_member == false) then return action end
+    error(format("Invalid action setting: %s", action))
 end
 
 local function build_url_and_controller(action, resource, resources_stack, namespaces, is_member)
-    local controller = "Controller"
-    local url = ""
+    local controller_stack = {"Controller"}
+    local url_stack = {""} -- make sure url start with /
     if(namespaces ~= nil) then
-        controller = controller .. "." .. table_concat(namespaces, ".")
-        url = "/" .. table_concat(namespaces, "/")
+        table_insert(controller_stack, table_concat(namespaces, "."))
+        table_insert(url_stack, table_concat(namespaces, "/"))
     end
+    table_insert(controller_stack, singular(resource))
 
-    controller = controller .. "." .. singular(resource)
     if(resources_stack ~= nil) then
         for _, r in ipairs(resources_stack) do
-            url = url .. "/" .. plural(r) .. "/:" .. singular(r) .. "_id" -- r is the parent resource
+            table_insert(url_stack, format("%s/:%s_id", plural(r), singular(r)))
         end
     end
-    url = url .. "/" .. plural(resource:lower())
-    url = url .. url_tail(action, is_member)
+    table_insert(url_stack, plural(resource:lower()))
+    table_insert(url_stack, url_tail(action, is_member))
+
+    local url = table_concat(url_stack, "/")
+    local controller = table.concat( controller_stack, ".")
 
     return url, controller
 end
@@ -206,7 +209,7 @@ end
 
 function _M.print()
     for _, rule in ipairs(_M.rules) do
-        log(table_concat(rule.origin, "  ") .. "  " .. rule.regex .. "\n")
+        log(format("%s %s \n", table_concat(rule.origin, "  "), rule.regex))
     end
 end
 

@@ -20,7 +20,7 @@ end
 function _M.render_template(ctx, data, path)
     if(not file_exists(path)) then
         _M.error_page(ctx, 404)
-        erro("template not exist: " .. path)
+        erro(format("template not exist: %s", path))
     end
 
     local template = APP.config.template or _M.default_template
@@ -35,15 +35,15 @@ end
 
 function _M.error_page(ctx, code)
     if(not code) then code = "error" end
-    local view = "app/view/" .. tostring(code) .. ".html"
+    local view = format("app/view/%s.html", code)
 
     if(not file_exists(view)) then
         if (APP.config.env ~= "production") then
-            print("error: 404.html not found")
+            log("error: 404.html not found")
             ctx.response:status(404):send(string.format([[<html><body>404.html not found</html>]]))
             ctx.response:finish()
         else
-            print("error: " .. code .. ".html not found")
+            log(format("error: %s.html not found", code))
             ctx.response:status(500):send([[<html><head><title>error</title></head>
         <body>server error</body></html>]])
             ctx.response:finish()

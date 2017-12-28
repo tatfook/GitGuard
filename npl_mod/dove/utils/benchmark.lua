@@ -13,7 +13,6 @@ demo_benchmark:stop() -- will print the time cost
 ]]
 
 local _M = commonlib.gettable("Dove.Utils.Benchmark")
-_M.benchmark_prefix = "## Benchmark ##  "
 
 function _M:ctor(title)
     self.title = title or "Benchmark"
@@ -21,7 +20,7 @@ function _M:ctor(title)
 end
 
 function _M:start()
-    if(self.started == true) then log("Benchmark is in progress, will try to restart it!") end
+    if(self.started == true) then log("Benchmark was in progress, will try to restart it!") end
     self.start = os.clock()
     self.started = true
     self.stop = nil
@@ -43,6 +42,6 @@ function _M:print()
         log("Benchmark is in progress, please stop it first!")
         return
     end
-    print(self.benchmark_prefix .. self.title .. "cost " .. self.time_cost )
+    log(format("## Benchmark ## %s cost %s", self.title, self.time_cost ))
 end
 

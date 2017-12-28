@@ -26,6 +26,7 @@ end
 local function load_app()
     Loader.load_files("app/controllers")
     Loader.load_files("app/models")
+    Loader.load_files("app/helpers")
     Loader.load_files("config/initializers")
 end
 
@@ -33,7 +34,7 @@ function App:info()
 end
 
 function App:start()
-    NPL.load("config/enviroment/" .. self.config.env)
+    NPL.load(format("config/enviroments/%s", self.config.env))
     load_app()
     -- 启动web服务器
     WebServer:Start("app", "0.0.0.0", self.config.port)

@@ -16,4 +16,4 @@ NPL.load("./helper")
 NPL.load("./context")
 NPL.load("./application")
 
-print("app framework is ready")
+log("app framework is ready")

@@ -16,7 +16,7 @@ end
 
 local function add_service(middleware, lib)
     if(_M.services[middleware] ~= nil) then
-        log("warning: service " .. middleware .. " already existed, please check if there are some mistakes.")
+        log(format("warning: service %s already existed, please check if there are some mistakes.", middleware))
     end
     _M.services[middleware] = lib
 end
@@ -32,14 +32,14 @@ function _M.register(middleware)
     if(type(middleware) ~= "string") then error("please register with the middleware class name") end
     local middleware_lib = commonlib.gettable(middleware)
     if(type(middleware_lib) ~= "table") then error("Invalid middleware!") end
-    if(type(middleware_lib.handle) ~= "function") then error("please implement 'handle' method for middleware " .. middleware) end
+    if(type(middleware_lib.handle) ~= "function") then error(format("please implement 'handle' method for middleware %s", middleware)) end
     if(_M.services[middleware] ~= nil) then
-        log("warning: service " .. middleware .. " already existed, will ignore it.")
+        log(format("warning: service %s already existed, will ignore it.", middleware))
         return
     end
     add_to_pipeline(middleware)
     add_service(middleware, middleware_lib)
-    log("middleware " .. middleware .. " loaded!\n")
+    log(format("middleware %s loaded!\n", middleware))
 end
 
 function _M.handle(ctx)
@@ -48,17 +48,17 @@ function _M.handle(ctx)
             traversal(ctx)
         end,
         function(e)
-            print("error: Dispatcher.traversal failed.")
-            print(e)
-            print(debug.traceback())
-            ctx.response:send( e .. "\n" .. debug.traceback())
+            log("error: Dispatcher.traversal failed.")
+            log(e)
+            log(debug.traceback())
+            ctx.response:send(format("exception: %s \n debug: %s", e ,debug.traceback()))
         end
     )
 
     if (string.find(ctx.response.statusline, "302")) then
         ctx.response:send("")
     elseif (ctx.request._isAsync) then
-        print("a async request.")
+        log("a async request.")
     else
         ctx.response:finish()
         ctx.response:End()
