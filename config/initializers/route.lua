@@ -1,4 +1,3 @@
-
 local Route = commonlib.gettable("ActionDispatcher.Routing.Route")
 
 local routes = {
@@ -6,7 +5,7 @@ local routes = {
         {"get", "/", "Controller.Home", "index"}
     },
     resources = {
-        repositories = {},
+        repositories = {}
     }
 }
 

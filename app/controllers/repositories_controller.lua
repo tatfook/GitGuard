@@ -4,7 +4,6 @@
     Date:   2017/11/22
     Desc:   repository CRUD API Method
 ]]
-
 local _C = commonlib.inherit(Dove.Controller.Base, "Controller.Repository")
 _C.resource_name = "repository"
 

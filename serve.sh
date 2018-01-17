@@ -1,1 +1,1 @@
-npl bootstrapper="boot.lua"
+nplc start
