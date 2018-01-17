@@ -11,4 +11,3 @@ local routes = {
 }
 
 Route.init(routes)
-Route.print()
